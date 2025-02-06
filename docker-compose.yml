@@ -45,7 +45,7 @@ services:
   producer:
     build:
       context: .
-      dockerfile: Dockerfile.producer
+      dockerfile: producer/Dockerfile
     depends_on:
       pulsar:
         condition: service_healthy
@@ -57,7 +57,7 @@ services:
   processor:
     build:
       context: .
-      dockerfile: Dockerfile.processor
+      dockerfile: processor/Dockerfile
     depends_on:
       pulsar:
         condition: service_healthy
