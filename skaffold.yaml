@@ -1,0 +1,17 @@
+apiVersion: skaffold/v4beta12
+kind: Config
+metadata:
+  name: iot-platform
+build:
+  artifacts:
+    - image: processor
+      context: .
+      docker:
+        dockerfile: processor/Dockerfile
+    - image: producer
+      context: .
+      docker:
+        dockerfile: producer/Dockerfile
+manifests:
+  rawYaml:
+    - ./infra/k8s/*.yaml
