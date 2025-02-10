@@ -1,0 +1,105 @@
+serviceAccount:
+  create: true
+  name: iot-platform-service-account
+
+pulsar:
+  image:
+    repository: apachepulsar/pulsar
+    tag: latest
+  persistence:
+    data:
+      enabled: true
+      size: 10Gi
+    conf:
+      enabled: true
+      size: 1Gi
+  service:
+    ports:
+      - name: pulsar
+        port: 6650
+        targetPort: 6650
+      - name: admin
+        port: 8080
+        targetPort: 8080
+
+postgres:
+  image:
+    repository: postgres
+    tag: latest
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: standard
+  config:
+    POSTGRES_DB: sensordb
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  service:
+    port: 5432
+
+grafana:
+  image:
+    repository: grafana/grafana
+    tag: latest
+  adminPassword: admin
+  service:
+    port: 3000
+
+producer:
+  image:
+    repository: cktran16x2/producer
+    tag: latest
+    pullPolicy: IfNotPresent
+  config:
+    PULSAR_HOST: pulsar
+    PULSAR_PORT: "6650"
+    PULSAR_URL: pulsar://pulsar:6650
+
+processor:
+  image:
+    repository: cktran16x2/processor
+    tag: latest
+    pullPolicy: IfNotPresent
+  config:
+    PULSAR_HOST: pulsar
+    PULSAR_PORT: "6650"
+    DB_HOST: postgres
+    DB_PORT: "5432"
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    - secretName: your-tls-secret
+      hosts:
+        - iot.example.com
+  hosts:
+    - host: iot.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: grafana    
+          port: 3000         
+
+
+
+service:
+  type: ClusterIP
+  port: 80
+  sessionAffinity: None
+
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  pullPolicy: IfNotPresent

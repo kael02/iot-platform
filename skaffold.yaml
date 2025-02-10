@@ -5,13 +5,14 @@ metadata:
 build:
   artifacts:
     - image: processor
-      context: .
+      context: ./src
       docker:
         dockerfile: processor/Dockerfile
     - image: producer
-      context: .
+      context: ./src
       docker:
         dockerfile: producer/Dockerfile
+
 manifests:
   rawYaml:
     - ./infra/k8s/*.yaml

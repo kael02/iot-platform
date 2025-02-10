@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: processor
+  template:
+    metadata:
+      labels:
+        app: processor
+    spec:
+      initContainers:
+        - name: wait-for-pulsar
+          image: busybox
+          command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
+        - name: wait-for-postgres
+          image: busybox
+          command: ['sh', '-c', 'until nc -z postgres 5432; do echo waiting for postgres; sleep 2; done;']
+      containers:
+        - name: processor
+          image: {{ .Values.processor.image.repository }}:{{ .Values.processor.image.tag }}
+          env:
+            {{- range $key, $value := .Values.processor.config }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}

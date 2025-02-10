@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pulsar
+  name: {{ .Release.Name }}-pulsar
 spec:
   replicas: 1
   selector:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pulsar
-          image: apachepulsar/pulsar:latest
+          image: {{ .Values.pulsar.image.repository }}:{{ .Values.pulsar.image.tag }}
           command: ["bin/pulsar", "standalone"]
           ports:
             - containerPort: 6650
@@ -39,7 +39,7 @@ spec:
       volumes:
         - name: pulsar-data
           persistentVolumeClaim:
-            claimName: pulsar-data
+            claimName: {{ .Release.Name }}-pulsar-data
 ---
 apiVersion: v1
 kind: Service
@@ -48,10 +48,10 @@ metadata:
 spec:
   selector:
     app: pulsar
+
   ports:
-    - name: pulsar
-      port: 6650
-      targetPort: 6650
-    - name: http
-      port: 8080
-      targetPort: 8080
+    {{- range .Values.pulsar.service.ports }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+    {{- end }}

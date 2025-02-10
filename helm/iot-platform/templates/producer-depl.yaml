@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      initContainers:
+        - name: wait-for-pulsar
+          image: busybox
+          command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
+      containers:
+        - name: producer
+          image: {{ .Values.producer.image.repository }}:{{ .Values.producer.image.tag }}
+          env:
+            {{- range $key, $value := .Values.producer.config }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
