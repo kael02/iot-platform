@@ -3,6 +3,8 @@ name: Build and Push Producer
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - src/producer/**
   workflow_dispatch:
 
 jobs:

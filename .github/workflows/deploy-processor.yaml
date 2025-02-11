@@ -3,6 +3,8 @@ name: Build and Push Processor
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - src/processor/**
   workflow_dispatch:
 
 jobs:
