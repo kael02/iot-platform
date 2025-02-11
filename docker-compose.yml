@@ -42,7 +42,7 @@ services:
 
   producer:
     build:
-      context: .
+      context: ./src
       dockerfile: producer/Dockerfile
     depends_on:
       pulsar:
@@ -54,7 +54,7 @@ services:
 
   processor:
     build:
-      context: .
+      context: ./src
       dockerfile: processor/Dockerfile
     depends_on:
       pulsar:

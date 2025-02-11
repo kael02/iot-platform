@@ -1,0 +1,34 @@
+name: Build and Push Processor
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build_and_push_processor:
+    runs-on: ubuntu-latest
+    
+    env:
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+    
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Processor image
+        run: |
+          docker build \
+            -t ${{ env.DOCKERHUB_USER }}/processor:latest \
+            -f ./src/processor/Dockerfile \
+            ./src
+
+      - name: Push Processor image
+        run: |
+          docker push ${{ env.DOCKERHUB_USER }}/processor:latest
