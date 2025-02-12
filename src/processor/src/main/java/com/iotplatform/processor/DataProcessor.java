@@ -90,7 +90,7 @@ public class DataProcessor implements Function<byte[], Void> {
                 stmt.setDouble(2, data.getTemperature());
                 stmt.setDouble(3, data.getHumidity());
                 stmt.setTimestamp(4, java.sql.Timestamp.valueOf(data.getTimestamp()));
-                stmt.setInt(5, isAnomaly ? 1 : 0);  // ClickHouse uses UInt8 for boolean
+                stmt.setInt(5, isAnomaly ? 1 : 0);  
 
                 stmt.executeUpdate();
                 System.out.println("Stored data in ClickHouse: " + mapper.writeValueAsString(data));
