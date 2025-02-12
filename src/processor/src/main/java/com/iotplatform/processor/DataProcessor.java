@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DataProcessor implements Function<byte[], Void> {
-    private static final String DB_URL = "jdbc:clickhouse://localhost:8123";
+    private static final String DB_URL = "jdbc:clickhouse://localhost:8123/default";
     private static final String DB_USER = "default";
     private static final String DB_PASSWORD = ""; 
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
