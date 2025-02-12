@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class DataProcessor implements Function<byte[], Void> {
     private static final String DB_URL = "jdbc:clickhouse://clickhouse-iot-clickhouse:8123/default";
     private static final String DB_USER = "default";
-    private static final String DB_PASSWORD = "custom-password"; 
+    private static final String DB_PASSWORD = ""; 
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
     private static final String BROKER_URL = "pulsar://pulsar:6650";
 
