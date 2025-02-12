@@ -1,0 +1,37 @@
+# File: clickhouse-single.yaml
+---
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  name: single
+  namespace: clickhouse
+spec:
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volume-template
+      logVolumeClaimTemplate: log-volume-template
+  templates:
+    volumeClaimTemplates:
+      - name: data-volume-template
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+      - name: log-volume-template
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 100Mi
+  configuration:
+    clusters:
+      - name: clickhouse
+    users:
+      default/password_sha256_hex: ea3e0ba4c196be92523629d14b345d054588f5df9cfb338369e6a15a3b562fa9
+      default/password: 'custom-password'
+      default/networks/ip:
+        - 0.0.0.0/0
+  

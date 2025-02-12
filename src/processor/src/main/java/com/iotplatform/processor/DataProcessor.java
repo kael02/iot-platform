@@ -4,21 +4,24 @@ import org.apache.pulsar.client.api.*;
 import org.apache.pulsar.functions.api.Context;
 import org.apache.pulsar.functions.api.Function;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.clickhouse.jdbc.ClickHouseDataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DataProcessor implements Function<byte[], Void> {
-    private static final String DB_URL = "jdbc:postgresql://postgres:5432/sensordb";
-    private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "postgres";
+    private static final String DB_URL = "jdbc:clickhouse://clickhouse:8123/default";
+    private static final String DB_USER = "default";
+    private static final String DB_PASSWORD = "custom-password"; 
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
     private static final String BROKER_URL = "pulsar://pulsar:6650";
 
     private ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
+        createTableIfNotExists();
+
         PulsarClient client = PulsarClient.builder()
                 .serviceUrl(BROKER_URL)
                 .build();
@@ -48,14 +51,37 @@ public class DataProcessor implements Function<byte[], Void> {
         }
     }
 
+    private static void createTableIfNotExists() throws Exception {
+        Properties properties = new Properties();
+        properties.setProperty("user", DB_USER);
+        properties.setProperty("password", DB_PASSWORD);
+        
+        try (Connection conn = new ClickHouseDataSource(DB_URL, properties).getConnection()) {
+            String createTableSQL = 
+                "CREATE TABLE IF NOT EXISTS sensor_data (" +
+                "    sensor_id String," +
+                "    temperature Float64," +
+                "    humidity Float64," +
+                "    timestamp DateTime," +
+                "    is_anomaly UInt8" +
+                ") ENGINE = MergeTree()" +
+                "ORDER BY (timestamp, sensor_id)";
+            
+            conn.createStatement().execute(createTableSQL);
+        }
+    }
+
     @Override
     public Void process(byte[] input, Context context) throws Exception {
         try {
             SensorData data = mapper.readValue(input, SensorData.class);
-
             boolean isAnomaly = isAnomalous(data);
 
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            Properties properties = new Properties();
+            properties.setProperty("user", DB_USER);
+            properties.setProperty("password", DB_PASSWORD);
+
+            try (Connection conn = new ClickHouseDataSource(DB_URL, properties).getConnection()) {
                 String sql = "INSERT INTO sensor_data (sensor_id, temperature, humidity, timestamp, is_anomaly) " +
                         "VALUES (?, ?, ?, ?, ?)";
 
@@ -64,10 +90,10 @@ public class DataProcessor implements Function<byte[], Void> {
                 stmt.setDouble(2, data.getTemperature());
                 stmt.setDouble(3, data.getHumidity());
                 stmt.setTimestamp(4, java.sql.Timestamp.valueOf(data.getTimestamp()));
-                stmt.setBoolean(5, isAnomaly);
+                stmt.setInt(5, isAnomaly ? 1 : 0);  // ClickHouse uses UInt8 for boolean
 
                 stmt.executeUpdate();
-                System.out.println("Stored data in PostgreSQL: " + mapper.writeValueAsString(data));
+                System.out.println("Stored data in ClickHouse: " + mapper.writeValueAsString(data));
             }
         } catch (Exception e) {
             System.err.println("Error processing data: " + e.getMessage());

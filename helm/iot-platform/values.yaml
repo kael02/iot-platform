@@ -83,6 +83,23 @@ ingress:
           service: grafana    
           port: 3000         
 
+clickhouse:
+  name: my-clickhouse
+  storage:
+    data:
+      size: 10Gi
+    logs:
+      size: 5Gi
+  users:
+    default:
+      password: mysecurepassword
+      username: default
+      networks:
+        - 0.0.0.0/0
+      profile: "default"
+      quota: "default"
+      settings:
+        readonly: 0
 
 
 service:

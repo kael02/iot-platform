@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clickhouse-config
+data:
+  users.xml: |
+    <yandex>
+        <users>
+            <default>
+                <password>mysecurepassword</password>
+                <networks>
+                    <ip>::/0</ip>
+                </networks>
+                <profile>default</profile>
+                <quota>default</quota>
+                <settings>
+                    <readonly>0</readonly>
+                </settings>
+            </default>
+        </users>
+    </yandex>
