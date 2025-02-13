@@ -31,32 +31,27 @@ minikube start
 minikube addons enable ingress
 
 ```
-4. Install ingress-nginx-controller
 
-```bash
-helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
-```
-
-5. Install ClickHouse 
+4. Install ClickHouse 
 
 ```bash 
 helm dependency update ./helm/clickhouse
 helm install clickhouse ./helm/clickhouse -n clickhouse --create-namespace
 ```
 
-6. Install iot-platform
+5. Install iot-platform
 
 ```bash
 helm install iot-platform ./helm/iot-platform -n iot-platform --create-namespace
 ```
 
-7. Start minikube tunnel
+6. Start minikube tunnel
 
 ```bash
 minikube tunnel
 ```
 
-8. Modify host file
+7. Modify host file
 
 ```bash
 127.0.0.1 iot-platform.local
