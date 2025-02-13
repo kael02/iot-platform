@@ -1,0 +1,25 @@
+clickhouse:
+  enabled: true
+  name: single
+  namespace: clickhouse
+  
+  storage:
+    data:
+      size: 10Gi
+      accessMode: ReadWriteOnce
+    logs:
+      size: 100Mi
+      accessMode: ReadWriteOnce
+  
+  configuration:
+    clusterName: clickhouse
+    users:
+      default:
+        password: mysecurepassword
+        networks:
+          ip: ["0.0.0.0/0"]
+
+  service:
+    type: ClusterIP
+    httpPort: 8123
+    tcpPort: 9000

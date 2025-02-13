@@ -1,0 +1,37 @@
+{{- if .Values.clickhouse.enabled }}
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  name: {{ .Values.clickhouse.name }}
+  namespace: {{ .Values.clickhouse.namespace }}
+spec:
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volume-template
+      logVolumeClaimTemplate: log-volume-template
+  templates:
+    volumeClaimTemplates:
+      - name: data-volume-template
+        spec:
+          accessModes:
+            - {{ .Values.clickhouse.storage.data.accessMode }}
+          resources:
+            requests:
+              storage: {{ .Values.clickhouse.storage.data.size }}
+      - name: log-volume-template
+        spec:
+          accessModes:
+            - {{ .Values.clickhouse.storage.logs.accessMode }}
+          resources:
+            requests:
+              storage: {{ .Values.clickhouse.storage.logs.size }}
+  configuration:
+    clusters:
+      - name: {{ .Values.clickhouse.configuration.clusterName }}
+    users:
+      default/password: {{ .Values.clickhouse.configuration.users.default.password | quote }}
+      default/networks/ip:
+      {{- range .Values.clickhouse.configuration.users.default.networks.ip }}
+        - {{ . }}
+      {{- end }}
+{{- end }}

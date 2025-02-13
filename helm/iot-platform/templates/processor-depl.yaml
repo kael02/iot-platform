@@ -16,9 +16,9 @@ spec:
         - name: wait-for-pulsar
           image: busybox
           command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
-        - name: wait-for-postgres
+        - name: wait-for-clickhouse
           image: busybox
-          command: ['sh', '-c', 'until nc -z postgres 5432; do echo waiting for postgres; sleep 2; done;']
+          command: ['sh', '-c', 'until nc -z clickhouse-single.clickhouse.svc.cluster.local 8123; do echo waiting for clickhouse; sleep 2; done;']
       containers:
         - name: processor
           image: {{ .Values.processor.image.repository }}:{{ .Values.processor.image.tag }}

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: clickhouse
+description: A Helm chart for ClickHouse deployment
+version: 0.1.0
+appVersion: "latest"
+dependencies:
+  - name: altinity-clickhouse-operator
+    version: "*"
+    repository: https://docs.altinity.com/clickhouse-operator

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.clickhouse.name }}
+  namespace: {{ .Values.clickhouse.namespace }}
+spec:
+  type: {{ .Values.clickhouse.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.clickhouse.service.httpPort }}
+      targetPort: 8123
+    - name: tcp
+      port: {{ .Values.clickhouse.service.tcpPort }}
+      targetPort: 9000
+  selector:
+    app: {{ .Values.clickhouse.name }}
