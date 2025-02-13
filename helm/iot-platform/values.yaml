@@ -22,21 +22,6 @@ pulsar:
         port: 8080
         targetPort: 8080
 
-postgres:
-  image:
-    repository: postgres
-    tag: latest
-  persistence:
-    enabled: true
-    size: 10Gi
-    storageClass: standard
-  config:
-    POSTGRES_DB: sensordb
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-  service:
-    port: 5432
-
 grafana:
   image:
     repository: grafana/grafana
@@ -82,24 +67,6 @@ ingress:
           pathType: Prefix
           service: grafana    
           port: 3000         
-
-clickhouse:
-  name: my-clickhouse
-  storage:
-    data:
-      size: 10Gi
-    logs:
-      size: 5Gi
-  users:
-    default:
-      password: mysecurepassword
-      username: default
-      networks:
-        - 0.0.0.0/0
-      profile: "default"
-      quota: "default"
-      settings:
-        readonly: 0
 
 
 service:

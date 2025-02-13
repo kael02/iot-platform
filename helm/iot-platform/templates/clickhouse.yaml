@@ -1,10 +1,9 @@
-# File: clickhouse-single.yaml
----
+{{- if .Values.clickhouse.enabled }}
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
 metadata:
   name: single
-  namespace: default
+  namespace: clickhouse
 spec:
   defaults:
     templates:
@@ -30,8 +29,7 @@ spec:
     clusters:
       - name: clickhouse
     users:
-      default/password_sha256_hex: ea3e0ba4c196be92523629d14b345d054588f5df9cfb338369e6a15a3b562fa9
       default/password: 'mysecurepassword'
       default/networks/ip:
         - 0.0.0.0/0
-  
+{{- end }}

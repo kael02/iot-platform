@@ -11,9 +11,10 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class DataProcessor implements Function<byte[], Void> {
-    private static final String DB_URL = "jdbc:clickhouse://localhost:8123/default";
+    private static final String DB_URL = "jdbc:clickhouse://clickhouse-single.clickhouse.svc.cluster.local:8123?compress=0";
+
     private static final String DB_USER = "default";
-    private static final String DB_PASSWORD = ""; 
+    private static final String DB_PASSWORD = "mysecurepassword"; 
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
     private static final String BROKER_URL = "pulsar://pulsar:6650";
 
@@ -55,7 +56,9 @@ public class DataProcessor implements Function<byte[], Void> {
         Properties properties = new Properties();
         properties.setProperty("user", DB_USER);
         properties.setProperty("password", DB_PASSWORD);
-        
+        System.out.println("DB_URL: " + DB_URL);
+        System.out.println("DB_USER: " + DB_USER);
+        System.out.println("DB_PASSWORD: " + DB_PASSWORD);
         try (Connection conn = new ClickHouseDataSource(DB_URL, properties).getConnection()) {
             String createTableSQL = 
                 "CREATE TABLE IF NOT EXISTS sensor_data (" +
