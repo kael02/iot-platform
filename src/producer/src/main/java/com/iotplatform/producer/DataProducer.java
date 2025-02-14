@@ -11,7 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class DataProducer {
-    private static final String SERVICE_URL = System.getenv().getOrDefault("PULSAR_URL", "pulsar://pulsar:6650");
+    // private static final String SERVICE_URL = System.getenv().getOrDefault("PULSAR_URL", "pulsar://pulsar:6650");
+
+private static final String SERVICE_URL = "pulsar://pulsar-proxy.pulsar.svc.cluster.local:6650";
+
+
     private static final String TOPIC_NAME = "persistent://public/default/sensor-data";
 
     public static void main(String[] args) throws Exception {

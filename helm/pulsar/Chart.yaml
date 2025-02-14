@@ -1,0 +1,9 @@
+apiVersion: v2
+name: pulsar-standalone
+description: A Helm chart for running a standalone Apache Pulsar cluster on Kubernetes.
+version: 0.1.0
+appVersion: "4.0.2"
+dependencies:
+  - name: pulsar
+    version: "3.9.0"
+    repository: "https://pulsar.apache.org/charts"

@@ -16,7 +16,8 @@ public class DataProcessor implements Function<byte[], Void> {
     private static final String DB_USER = "default";
     private static final String DB_PASSWORD = "mysecurepassword"; 
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
-    private static final String BROKER_URL = "pulsar://pulsar:6650";
+    
+    private static final String BROKER_URL = "pulsar://pulsar-proxy.pulsar.svc.cluster.local:6650";
 
     private ObjectMapper mapper = new ObjectMapper();
 

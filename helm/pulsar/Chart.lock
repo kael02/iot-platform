@@ -1,0 +1,6 @@
+dependencies:
+- name: pulsar
+  repository: https://pulsar.apache.org/charts
+  version: 3.9.0
+digest: sha256:34ecfd5a78c28aa4ed861c28c50f05ef1b0a5e8cb7c694c59e4b8bd85b9d03c8
+generated: "2025-02-14T15:06:52.2704966+07:00"

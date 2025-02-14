@@ -12,10 +12,10 @@ spec:
       labels:
         app: producer
     spec:
-      initContainers:
-        - name: wait-for-pulsar
-          image: busybox
-          command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
+      # initContainers:
+      #   - name: wait-for-pulsar
+      #     image: busybox
+      #     command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
       containers:
         - name: producer
           image: {{ .Values.producer.image.repository }}:{{ .Values.producer.image.tag }}
