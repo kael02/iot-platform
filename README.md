@@ -9,7 +9,7 @@ This is a platform for managing IoT devices. It includes a producer and a proces
 - Scoop
 - Kubernetes cluster
 - Minikube
-- ClickHouse operator
+- Helm
 
 ## Installation
 
@@ -46,10 +46,10 @@ minikube tunnel
 6. Modify host file
 
 ```bash
-127.0.0.1 iot-platform.local
+127.0.0.1 iot.example.com
 ```
 
-7. Open browser and navigate to http://iot-platform.local
+7. Open browser and navigate to http://iot.example.com
   - Login with username: admin and password: admin
   - Add new data connection
     - Name: ClickHouse
@@ -59,5 +59,13 @@ minikube tunnel
     - Username: default
     - Password: mysecurepassword
 
+# Links
 
+- [minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/)
+- [ClickHouse operator](https://github.com/Altinity/clickhouse-operator)
+- [ClickHouse](https://clickhouse.com/)
+- [helm](https://helm.sh/)
+- [kubernetes-reflector](https://github.com/emberstack/kubernetes-reflector)
 
+- [ClickHouse on kubernetes](https://blog.duyet.net/2024/03/clickhouse-on-kubernetes.html)
