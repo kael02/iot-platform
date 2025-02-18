@@ -12,10 +12,27 @@ spec:
       labels:
         app: processor
     spec:
-      # initContainers:
-      #   - name: wait-for-pulsar
-      #     image: busybox
-      #     command: ['sh', '-c', 'until nc -z pulsar 6650; do echo waiting for pulsar; sleep 2; done;']
+      initContainers:
+        - name: wait-for-pulsar-proxy
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z pulsar-proxy.pulsar.svc.cluster.local 6650; do
+                echo "waiting for pulsar-proxy";
+                sleep 2;
+              done;
+        - name: wait-for-clickhouse
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z clickhouse-single.clickhouse.svc.cluster.local 9000; do
+                echo "waiting for clickhouse-single";
+                sleep 2;
+              done;
       containers:
         - name: processor
           image: {{ .Values.processor.image.repository }}:{{ .Values.processor.image.tag }}

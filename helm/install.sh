@@ -57,7 +57,7 @@ main() {
     check_command "kubectl" "Please install kubectl from https://kubernetes.io/docs/tasks/tools/"
     check_kubectl_cluster
 
-    deploy_chart "app-util" "./app-util" "app-util"
+    deploy_chart "utils" "./utils" "utils"
     deploy_chart "pulsar" "./pulsar" "pulsar"
     deploy_chart "clickhouse" "./clickhouse" "clickhouse"
     deploy_chart "iot-platform" "./iot-platform" "iot-platform" false
