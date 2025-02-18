@@ -32,32 +32,24 @@ minikube addons enable ingress
 
 ```
 
-4. Install ClickHouse 
-
-```bash 
-helm dependency update ./helm/clickhouse
-helm install clickhouse ./helm/clickhouse -n clickhouse --create-namespace
-```
-
-5. Install iot-platform
-
+4. Install helm charts
 ```bash
-helm install iot-platform ./helm/iot-platform -n iot-platform --create-namespace
+  ./helm/install.sh
 ```
 
-6. Start minikube tunnel
+5. Start minikube tunnel
 
 ```bash
 minikube tunnel
 ```
 
-7. Modify host file
+6. Modify host file
 
 ```bash
 127.0.0.1 iot-platform.local
 ```
 
-9. Open browser and navigate to http://iot-platform.local
+7. Open browser and navigate to http://iot-platform.local
   - Login with username: admin and password: admin
   - Add new data connection
     - Name: ClickHouse
