@@ -50,6 +50,10 @@ processor:
     PULSAR_PORT: "6650"
     DB_HOST: postgres
     DB_PORT: "5432"
+  envFrom:
+    - secretRef:
+        name: clickhouse-credentials
+        namespace: clickhouse
 
 ingress:
   enabled: true

@@ -24,3 +24,5 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          envFrom:
+            {{- toYaml .Values.processor.envFrom | nindent 10 }}

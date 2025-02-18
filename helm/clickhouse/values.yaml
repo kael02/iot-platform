@@ -15,7 +15,6 @@ clickhouse:
     clusterName: clickhouse
     users:
       default:
-        password: mysecurepassword
         networks:
           ip: ["0.0.0.0/0"]
 

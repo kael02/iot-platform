@@ -29,9 +29,13 @@ spec:
     clusters:
       - name: {{ .Values.clickhouse.configuration.clusterName }}
     users:
-      default/password: {{ .Values.clickhouse.configuration.users.default.password | quote }}
-      default/networks/ip:
-      {{- range .Values.clickhouse.configuration.users.default.networks.ip }}
-        - {{ . }}
-      {{- end }}
+        admin/k8s_secret_password:
+          valueFrom:
+            secretKeyRef:
+              name: clickhouse-credentials
+              key: password
+        admin/networks/ip:
+        {{- range .Values.clickhouse.configuration.users.default.networks.ip }}
+          - {{ . }}
+        {{- end }}
 {{- end }}

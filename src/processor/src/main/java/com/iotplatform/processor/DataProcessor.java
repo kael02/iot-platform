@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class DataProcessor implements Function<byte[], Void> {
     private static final String DB_URL = "jdbc:clickhouse://clickhouse-single.clickhouse.svc.cluster.local:8123?compress=0";
 
-    private static final String DB_USER = "default";
-    private static final String DB_PASSWORD = "mysecurepassword"; 
+    private static final String DB_USER = System.getenv("username");
+    private static final String DB_PASSWORD = System.getenv("password");
     private static final String INPUT_TOPIC = "persistent://public/default/sensor-data";
     
     private static final String BROKER_URL = "pulsar://pulsar-proxy.pulsar.svc.cluster.local:6650";
