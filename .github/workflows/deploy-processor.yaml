@@ -12,25 +12,27 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-    
+      GHCR_USER: ${{ github.actor }}
+      IMAGE_NAME: processor
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ env.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ env.GHCR_USER }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Processor image
         run: |
           docker build \
-            -t ${{ env.DOCKERHUB_USER }}/processor:latest \
+            -t ghcr.io/${{ env.GHCR_USER }}/${{ env.IMAGE_NAME }}:latest \
             -f ./src/processor/Dockerfile \
             ./src
 
       - name: Push Processor image
         run: |
-          docker push ${{ env.DOCKERHUB_USER }}/processor:latest
+          docker push ghcr.io/${{ env.GHCR_USER }}/${{ env.IMAGE_NAME }}:latest
