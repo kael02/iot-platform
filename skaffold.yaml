@@ -1,18 +1,13 @@
-apiVersion: skaffold/v4beta12
+apiVersion: skaffold/v4beta8
 kind: Config
 metadata:
-  name: iot-platform
-build:
-  artifacts:
-    - image: processor
-      context: ./src
-      docker:
-        dockerfile: processor/Dockerfile
-    - image: producer
-      context: ./src
-      docker:
-        dockerfile: producer/Dockerfile
-
-manifests:
-  rawYaml:
-    - ./infra/k8s/*.yaml
+  name: iot-platform-stack
+deploy:
+  helm:
+    releases:
+      - name: iot-platform
+        chartPath: ./helm/iot-platform
+        namespace: iot-platform
+        createNamespace: true
+        upgradeOnChange: true
+        wait: true

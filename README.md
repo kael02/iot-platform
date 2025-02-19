@@ -25,13 +25,6 @@ scoop install minikube
 minikube start
 ```
 
-3. Install ingress-nginx
-
-```bash
-minikube addons enable ingress
-
-```
-
 4. Install helm charts
 ```bash
   ./helm/install.sh
@@ -59,6 +52,10 @@ minikube tunnel
     - Username: default
     - Password: mysecurepassword
 
+# Optional installation
+
+- [k9s](https://k9scli.io/)
+
 # Links
 
 - [minikube](https://minikube.sigs.k8s.io/docs/start/)
@@ -68,4 +65,6 @@ minikube tunnel
 - [helm](https://helm.sh/)
 - [kubernetes-reflector](https://github.com/emberstack/kubernetes-reflector)
 
+
 - [ClickHouse on kubernetes](https://blog.duyet.net/2024/03/clickhouse-on-kubernetes.html)
+- [Pulsar on kubernetes](https://pulsar.apache.org/docs/4.0.x/getting-started-helm/)

@@ -12,17 +12,28 @@ spec:
       labels:
         app: producer
     spec:
+      # initContainers:
+      #   - name: wait-for-pulsar-proxy
+      #     image: busybox
+      #     command:
+      #       - sh
+      #       - -c
+      #       - |
+      #         until nc -z pulsar-proxy.pulsar.svc.cluster.local 6650; do
+      #           echo "waiting for pulsar-proxy";
+      #           sleep 2;
+      #         done;
       initContainers:
-        - name: wait-for-pulsar-proxy
-          image: busybox
+        - name: wait-for-proxy
+          image: bitnami/kubectl
           command:
-            - sh
-            - -c
-            - |
-              until nc -z pulsar-proxy.pulsar.svc.cluster.local 6650; do
-                echo "waiting for pulsar-proxy";
-                sleep 2;
-              done;
+            - kubectl
+            - wait
+            - --for=condition=ready
+            - pod/pulsar-proxy-0
+            - -n
+            - pulsar
+            - --timeout=300s
       containers:
         - name: producer
           image: {{ .Values.producer.image.repository }}:{{ .Values.producer.image.tag }}

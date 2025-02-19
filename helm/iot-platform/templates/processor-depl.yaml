@@ -19,7 +19,7 @@ spec:
             - sh
             - -c
             - |
-              until nc -z pulsar-proxy.pulsar.svc.cluster.local 6650; do
+              until nc -z pulsar-proxy-0.pulsar.svc.cluster.local 6650; do
                 echo "waiting for pulsar-proxy";
                 sleep 2;
               done;

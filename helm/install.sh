@@ -31,6 +31,16 @@ check_kubectl_cluster() {
     fi
 }
 
+enable_minikube_ingress() {
+    if ! minikube addons list | grep -E "^|ingress" | grep -q "enabled"; then
+        echo "Enabling Minikube Ingress..."
+        minikube addons enable ingress
+    else
+        echo "Minikube Ingress is already enabled."
+    fi
+}
+
+
 deploy_chart() {
     local chart_name="$1"
     local chart_dir="$2"
@@ -56,6 +66,8 @@ main() {
     check_command "helm" "Please install Helm from https://helm.sh/"
     check_command "kubectl" "Please install kubectl from https://kubernetes.io/docs/tasks/tools/"
     check_kubectl_cluster
+
+    enable_minikube_ingress
 
     deploy_chart "utils" "./utils" "utils"
     deploy_chart "pulsar" "./pulsar" "pulsar"
