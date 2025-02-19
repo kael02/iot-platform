@@ -27,7 +27,7 @@ minikube start
 
 4. Install helm charts
 ```bash
-  ./helm/install.sh
+  ./k8s/install.sh
 ```
 
 5. Start minikube tunnel
