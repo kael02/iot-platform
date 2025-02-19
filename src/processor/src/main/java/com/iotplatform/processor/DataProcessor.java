@@ -36,7 +36,7 @@ public class DataProcessor implements Function<byte[], Void> {
 
         DataProcessor processor = new DataProcessor();
 
-        System.out.println("Started processing messages...");
+        System.out.println("Started processing messages..");
 
         while (true) {
             try {
